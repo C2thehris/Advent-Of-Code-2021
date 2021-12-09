@@ -21,5 +21,5 @@ fs.readFile(process.argv[2], 'ascii', (err, data) => {
   if (err)
     throw err
   part1(Object.assign([], data))
-  part2(Object.assign([],data))
+  part2(Object.assign([], data))
 });
