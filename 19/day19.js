@@ -168,6 +168,13 @@ function calculateAbsPos(lhs, rhs) {
   return { x: Infinity, y: Infinity, z: Infinity };
 }
 
+function manhattanDistance(lhs, rhs) {
+  const dx = Math.abs(lhs.absPos.x - rhs.absPos.x);
+  const dy = Math.abs(lhs.absPos.y - rhs.absPos.y);
+  const dz = Math.abs(lhs.absPos.z - rhs.absPos.z);
+  return dx + dy + dz;
+}
+
 function part1(scanners) {
   let cont = true;
   while (cont) {
@@ -199,12 +206,14 @@ function part1(scanners) {
   });
 
   console.log(`Part 1: ${beacons.size}`);
-}
 
-function part2(scanners) {
-  let ans = 0;
-
-  console.log(`Part 2: ${ans}`);
+  let max = 0;
+  for (let i = 0; i < scanners.length; i += 1) {
+    for (let j = 0; j < scanners.length; j += 1) {
+      max = Math.max(max, manhattanDistance(scanners[i], scanners[j]));
+    }
+  }
+  console.log(`Part 2: ${max}`);
 }
 
 const fs = require('fs');
@@ -239,5 +248,4 @@ fs.readFile(process.argv[2], 'ascii', (err, data) => {
   scanners[0].absPos.z = 0;
 
   part1(scanners);
-  part2(scanners);
 });
