@@ -26,7 +26,7 @@ function applyAlgorithm(image, algorithm, blank) {
   let dark = '';
   for (let i = 0; i < next[0].length; i += 1) {
     empty = `${blank}${empty}`;
-    dark = `${algorithm[0]}${dark}`;
+    dark = `${blank}${dark}`;
   }
   next = [dark, ...next, dark];
   copy = [empty, ...copy, empty];
