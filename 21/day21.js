@@ -85,26 +85,19 @@ function playQuantumGame(player1, player2) {
     const nextStates = new Map();
     const current = turn;
     currentStates.forEach((value, key) => {
-      let next = [];
+      const next = [];
       for (let i = 1; i <= 3; i += 1) {
         const firstRoll = updateState(key, i, current);
-        if (firstRoll.indexOf('wins') !== -1) {
-          next = [...next, firstRoll];
-        } else {
-          for (let j = 1; j <= 3; j += 1) {
-            const secondRoll = updateState(firstRoll, j, current);
-            if (secondRoll.indexOf('wins') !== -1) {
-              next = [...next, secondRoll];
-            } else {
-              for (let k = 1; k <= 3; k += 1) {
-                let endState = updateState(secondRoll, k, current);
-                endState = scoreState(endState, current);
-                next = [...next, endState];
-              }
-            }
+        for (let j = 1; j <= 3; j += 1) {
+          const secondRoll = updateState(firstRoll, j, current);
+          for (let k = 1; k <= 3; k += 1) {
+            let endState = updateState(secondRoll, k, current);
+            endState = scoreState(endState, current);
+            next.push(endState);
           }
         }
       }
+
       next.forEach((state) => {
         if (nextStates.has(state)) {
           nextStates.set(state, value + nextStates.get(state));
@@ -113,23 +106,22 @@ function playQuantumGame(player1, player2) {
         }
       });
     });
-    if (turn === 1) {
-      turn = 2;
-    } else {
-      turn = 1;
-    }
 
     if (nextStates.has('player 1 wins')) {
       player1Wins += nextStates.get('player 1 wins');
       nextStates.delete('player 1 wins');
     }
-
     if (nextStates.has('player 2 wins')) {
       player2Wins += nextStates.get('player 2 wins');
       nextStates.delete('player 2 wins');
     }
-
     currentStates = nextStates;
+
+    if (turn === 1) {
+      turn = 2;
+    } else {
+      turn = 1;
+    }
   }
 
   return Math.max(player1Wins, player2Wins);
